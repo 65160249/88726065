@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const todoList = document.getElementById("todo-list");
     const todoInput = document.getElementById("todo-input");
     const addButton = document.getElementById("add-button");
-    // อาร์เรย์ส าหรับเก็บรายการ Todo
+    // อาร์เรย์สำหรับเก็บรายการ  Todo
     let todos = [];
-    // เพิ่มรายการ Todo
+    // เพิ่มรายการ  Todo
     function addTodo() {
     const todoText = todoInput.value.trim();
     if (todoText !== "") {
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     text: todoText,
     completed: false,
     };
+    //todos.push(todoItem); - คือการเพิ่ม todoItem ลงในอาร์เรย์ todos ที่เป็นรายการของงานทั้งหมด
     todos.push(todoItem);
     renderTodoList();
     todoInput.value = "";
@@ -31,27 +32,47 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // แสดงรายการ Todo บนหน้าเว็บ
     function renderTodoList() {
-    console.log(todos);
-    todoList.innerHTML = "";
-    for (let i = 0; i < todos.length; i++) {
-    const todoItem = todos[i];
-    const listItem = document.createElement("li");
-    listItem.textContent = todoItem.text;
-    if (todoItem.completed) {
-    listItem.classList.add("completed");
+        console.log(todos);
+
+        // ล้างค่า HTML ภายใน element ที่มี id หรือชื่อว่า todoList
+        // เพื่อทำความสะอาดก่อนที่จะแสดงข้อมูลใหม่
+        todoList.innerHTML = "";
+        
+        // วนลูปผ่านทุกรายการในอาร์เรย์ todos
+        for (let i = 0; i < todos.length; i++) {
+        
+            // ดึงข้อมูลรายการงานที่ตำแหน่ง i
+            const todoItem = todos[i];
+        
+            // สร้าง element <li> (list item) เพื่อแสดงผลรายการงาน
+            const listItem = document.createElement("li");
+            
+            // กำหนดข้อความของ list item เป็นข้อความของรายการงาน
+            listItem.textContent = todoItem.text;
+        
+            // ถ้ารายการงานถูกทำเสร็จแล้ว, เพิ่ม class "completed" เพื่อสร้างสีหรือสไตล์
+            if (todoItem.completed) {
+                listItem.classList.add("completed");
+            }
+            // สร้างปุ่มลบและเพิ่ม Event Listener เพื่อเรียกฟังก์ชัน deleteTodo(i)
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "ลบ";
+            deleteButton.addEventListener("click", () => deleteTodo(i));
+        
+            // สร้างปุ่มเสร็จ/ยกเลิก และเพิ่ม Event Listener เพื่อเรียกฟังก์ชัน toggleComplete(i)
+            const completeButton = document.createElement("button");
+            completeButton.textContent = todoItem.completed ? "ยกเลิก" : "เสร็จ";
+            completeButton.addEventListener("click", () => toggleComplete(i));
+        
+            // เพิ่มปุ่มลบและปุ่มเสร็จ/ยกเลิกลงใน list item
+            listItem.appendChild(completeButton);
+            listItem.appendChild(deleteButton);
+        
+            // เพิ่ม list item ลงใน element ที่มี id หรือชื่อว่า todoList
+            todoList.appendChild(listItem);
+        }
     }
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "ลบ";
-    deleteButton.addEventListener("click", () => deleteTodo(i));
-    const completeButton = document.createElement("button");
-    completeButton.textContent = todoItem.completed ? "ยกเลิก" : "เสร็จ";
-    completeButton.addEventListener("click", () => toggleComplete(i));
-    listItem.appendChild(completeButton);
-    listItem.appendChild(deleteButton);
-    todoList.appendChild(listItem);
-    }
-    }
-    // การกดปุ่ ม "เพิ่ม"
+    // การกดปุ่ม "เพิ่ม"
     addButton.addEventListener("click", addTodo);
     // การกด Enter ใน input
     todoInput.addEventListener("keypress", function (event) {
