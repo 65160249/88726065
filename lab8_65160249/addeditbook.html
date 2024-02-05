@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f5f5f5;
+          color: #333;
+        }
+        header {
+          background-color: rgb(81, 160, 72);
+          padding: 15px;
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: #fff;
+        }
+        .container {
+          display: flex;
+          justify-content: center;
+        }
+  
+        .form-input {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+  
+        .form-input input {
+          margin-bottom: 10px;
+          padding: 10px;
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          font-size: 16px;
+        }
+  
+        .button {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+      }
+
+      .button button {
+        padding: 12px 20px;
+        font-size: 18px;
+        background-color: rgb(121, 234, 131);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .button button:hover {
+        background-color: #18d275;
+      }
+        
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 30px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          background-color: #fff;
+        }
+  
+        th, td {
+          padding: 15px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+  
+        th {
+          background-color: rgb(50, 116, 201);
+          color: #fff;
+        }
+  
+        tr:hover {
+          background-color: #f5f5f5;
+        }
+      </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book DB - Add/Edit</title>
+  </head>
+  <body>
+    <header><h3>Book DB : Add / Edit</h3></header>
+    <div class="container">
+      <div class="form-input">
+        <input type="hidden" id="id" />
+        <input type="text" id="book_name" placeholder="ชื่อหนังสือ" /> <br />
+        <input type="text" id="book_price" placeholder="ราคา" /> <br />
+        <input type="text" id="book_Author1" placeholder="ผู้แต่ง-1" /> <br />
+        <input type="text" id="book_Author2" placeholder="ผู้แต่ง-2" /> <br />
+        <input type="text" id="book_Author3" placeholder="ผู้แต่ง-3" /> <br />
+        <div class="button">
+          <button onclick="addeditBook()">Save</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      var books;
+      function findMaxBookId() {
+        var max = 0;
+        for (var i = 0; i < books.length; i++) {
+          if (books[i].id > max) {
+            max = books[i].id;
+          }
+        }
+        return max;
+      }
+      function addeditBook() {
+        addBook();
+        window.location.href = "search.html";
+      }
+      function addBook() {
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("book_name").value;
+        var price = document.getElementById("book_price").value;
+        var author1 = document.getElementById("book_Author1").value;
+        var author2 = document.getElementById("book_Author2").value;
+        var author3 = document.getElementById("book_Author3").value;
+        if (id == "") {
+          id = findMaxBookId() + 1;
+          var book = {
+            id: id,
+            name: name,
+            price: price,
+            author1: author1,
+            author2: author2,
+            author3: author3,
+          };
+          books.push(book);
+        } else {
+          for (var i = 0; i < books.length; i++) {
+            if (books[i].id == id) {
+              books[i].name = name;
+              books[i].price = price;
+              books[i].author1 = author1;
+              books[i].author2 = author2;
+              books[i].author3 = author3;
+            }
+          }
+        }
+
+        localStorage.setItem("books", JSON.stringify(books));
+
+        document.getElementById("id").value = "";
+        document.getElementById("book_name").value = "";
+        document.getElementById("book_price").value = "";
+        document.getElementById("book_Author1").value = "";
+        document.getElementById("book_Author2").value = "";
+        document.getElementById("book_Author3").value = "";
+        document.getElementById("book_name").focus();
+      }
+
+      var books = JSON.parse(localStorage.getItem("books"));
+      if (books == null) {
+        books = [];
+      }
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var id = urlParams.get("id");
+      if (id) {
+        var bookToEdit = books.find(function (book) {
+          return book.id == id;
+        });
+        if (bookToEdit) {
+          document.getElementById("id").value = bookToEdit.id;
+          document.getElementById("book_name").value = bookToEdit.name;
+          document.getElementById("book_price").value = bookToEdit.price;
+          document.getElementById("book_Author1").value = bookToEdit.author1;
+          document.getElementById("book_Author2").value = bookToEdit.author2;
+          document.getElementById("book_Author3").value = bookToEdit.author3;
+        }
+      }
+    </script>
+  </body>
+</html>

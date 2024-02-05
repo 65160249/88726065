@@ -1,0 +1,28 @@
+{
+    "books": [
+      {
+        "id": 1,
+        "name": "Death Note",
+        "price": "155",
+        "author1": "Tsugumi Ohba",
+        "author2": "Takeshi Obata",
+        "author3": ""
+      },
+      {
+        "id": 2,
+        "name": "21 วัน เปลี่ยนพฤติกรรมการเงิน",
+        "price": "229",
+        "author1": "JEFF ROSE",
+        "author2": "ไชโย ชูหมื่นไวย",
+        "author3": ""
+      },
+      {
+        "id": 3,
+        "name": "มรรคาสตาร์วอร์ส",
+        "price": "180",
+        "author1": "วาทิต ชาติกุล",
+        "author2": "Jediscore",
+        "author3": ""
+      }
+    ]
+  }
